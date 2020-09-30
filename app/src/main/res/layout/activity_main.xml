@@ -4,102 +4,112 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
+    android:background="@android:color/background_light"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/shape_button"
+        android:fontFamily="sans-serif-light"
         android:text="@string/your_portal_for_everything_offline"
         android:textAlignment="center"
-        android:textColor="#FF9800"
+        android:textColor="#0C0C0C"
         android:textSize="25sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_mtn"
-        android:layout_width="0dp"
+        android:id="@+id/textView_footer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/background_light"
-        android:clickable="true"
-        android:text="@string/mtn"
-        android:textAlignment="center"
-        android:textColor="#FFC107"
-        android:textSize="20sp"
+        android:layout_marginBottom="40dp"
+        android:text="Recharge Kit  2020"
+        android:textColor="#3149D1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toTopOf="@+id/textView_footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_choode_network"
+        app:layout_constraintVertical_bias="0.120000005">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView_mtn"
+                android:layout_width="201dp"
+                android:layout_height="152dp"
+                app:layout_constraintEnd_toStartOf="@+id/imageView_airtel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/mtn_home" />
+
+            <ImageView
+                android:id="@+id/imageView_airtel"
+                android:layout_width="201dp"
+                android:layout_height="152dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView_nine_mobile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView_mtn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/airtel_home" />
+
+            <ImageView
+                android:id="@+id/imageView_glo"
+                android:layout_width="201dp"
+                android:layout_height="152dp"
+                android:background="#FFFFFF"
+                app:layout_constraintEnd_toStartOf="@+id/imageView_nine_mobile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_mtn"
+                app:srcCompat="@drawable/glo_home" />
+
+            <ImageView
+                android:id="@+id/imageView_nine_mobile"
+                android:layout_width="201dp"
+                android:layout_height="152dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView_glo"
+                app:layout_constraintTop_toBottomOf="@+id/imageView_airtel"
+                app:srcCompat="@drawable/nine_mobile2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView_choode_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:fontFamily="casual"
+        android:text="Choose a Network"
+        android:textColor="#0E0E0E"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_header" />
-
-    <TextView
-        android:id="@+id/textView_airtel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/background_light"
-        android:clickable="true"
-        android:text="@string/airtel"
-        android:textAlignment="center"
-        android:textColor="#FFC107"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView_glo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_mtn" />
-
-    <TextView
-        android:id="@+id/textView_glo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="20dp"
-        android:background="@android:color/background_light"
-        android:clickable="true"
-        android:text="@string/glo"
-        android:textAlignment="center"
-        android:textColor="#FFC107"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView_9mobile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_airtel" />
-
-    <TextView
-        android:id="@+id/textView_9mobile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/background_light"
-        android:clickable="true"
-        android:text="@string/Ninemobile"
-        android:textAlignment="center"
-        android:textColor="#FFC107"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_glo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

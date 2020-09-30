@@ -9,19 +9,21 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView header;
-    private TextView mtn;
-    private TextView airtel;
-    private TextView glo;
-    private TextView nineMobile;
+    private ImageView mtn;
+    private ImageView airtel;
+    private ImageView glo;
+    private ImageView nineMobile;
     private Button airtimeButton;
     private Button dataButton;
     private Button transferButton;
-    private Button airtimeOption;
+    private TextView footer;
+    private TextView network;
 
 
     @Override
@@ -30,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         header = findViewById(R.id.textView_header);
-        mtn = findViewById(R.id.textView_mtn);
-        airtel = findViewById(R.id.textView_airtel);
-        glo = findViewById(R.id.textView_glo);
-        nineMobile = findViewById(R.id.textView_9mobile);
-
+        mtn = findViewById(R.id.imageView_mtn);
+        airtel = findViewById(R.id.imageView_airtel);
+        glo = findViewById(R.id.imageView_glo);
+        nineMobile = findViewById(R.id.imageView_nine_mobile);
+        footer = findViewById(R.id.textView_footer);
+        network = findViewById(R.id.textView_choode_network);
         showMtnOptions();
         showAirtelOptions();
         showGloOption();

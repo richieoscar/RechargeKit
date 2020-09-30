@@ -2,11 +2,11 @@ package com.example.rechargekit;
 
 import androidx.annotation.NonNull;
 
-public class Model {
-    private static  final String mtnRechargeCode = "*555*" +"#";
-    private  static  final  String airtelRechargeCode = "*126*" +"#";
-    private  static  final  String gloRechargeCode = "#124#*" +"#";
-    private  static  final  String nineMobileRechargeCode = "*222*" +"#";
+public class RechargeCodes {
+    private static  final String mtnRechargeCode = "*555*" ;
+    private  static  final  String airtelRechargeCode = "*126*" ;
+    private  static  final  String gloRechargeCode = "*123*" +"#";
+    private  static  final  String nineMobileRechargeCode = "*222*";
 
     public static String getMtnRechargeCode() {
         return mtnRechargeCode;
