@@ -1,9 +1,8 @@
 package com.example.rechargekit;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,8 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 public class DetailsActivity extends AppCompatActivity {
 
+    private static final String ENCODED_HASH = Uri.encode("#");
     private Button done;
     private EditText network;
     private EditText rechargePin;
@@ -54,6 +58,7 @@ public class DetailsActivity extends AppCompatActivity {
             final String nine_mobile = "9mobile";
 
 
+            // TODO CHECK INPUT SIZE, MTN 17 DIGITS, GLO 15 DIGITS e.t.c
            if(TextUtils.isEmpty(rechargePin.getText())){
                rechargePin.setError("Field is Empty");
                return;
@@ -63,6 +68,7 @@ public class DetailsActivity extends AppCompatActivity {
                return;
            }
 
+           // TODO USE A SWITCH CASE
            if(network.getText().toString().toLowerCase().equals(airtel_id)){
                String code = String.format("%s %s %s",RechargeCodes.getAirtelRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
                Uri uri = Uri.parse("tel:" +code );
@@ -72,20 +78,13 @@ public class DetailsActivity extends AppCompatActivity {
            }  else Toast.makeText(this, "Network not Recognized",Toast.LENGTH_SHORT).show();
 
             if(network.getText().toString().toLowerCase().equals(mtn_id)){
-                String code = String.format("%s %s %s",RechargeCodes.getMtnRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-                Uri uri = Uri.parse("tel:" +code );
-                Intent dialer = new Intent(Intent.ACTION_DIAL,uri);
-                startActivity(dialer);
-                return;
+                String code = String.format("%s%s%s",RechargeCodes.getMtnRechargeCode(), airtimeRechargePin, ENCODED_HASH);
+                dialCode(code);
             } else Toast.makeText(this, "Network not Recognized",Toast.LENGTH_SHORT).show();
 
             if(network.getText().toString().toLowerCase().equals(glo_id)){
-                String code = String.format("%s %s %s",RechargeCodes.getGloRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-                Uri uri = Uri.parse("tel:" +code );
-                Intent dialer = new Intent(Intent.ACTION_DIAL,uri);
-                startActivity(dialer);
-                return;
-
+                String code = String.format("%s%s%s",RechargeCodes.getGloRechargeCode(), airtimeRechargePin, ENCODED_HASH);
+                dialCode(code);
             } else Toast.makeText(this, "Network not Recognized",Toast.LENGTH_SHORT).show();
 
             if(network.getText().toString().toLowerCase().equals(nine_mobile)){
@@ -99,6 +98,25 @@ public class DetailsActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    private void dialCode(String code) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + code));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    // TODO Try This With a Phone
+    private void actionCall(String code) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + code));
+        if (ActivityCompat.checkSelfPermission(DetailsActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(intent);
     }
 
     private void  rechargeCArd(){
