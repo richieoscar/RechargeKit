@@ -3,11 +3,20 @@ package com.example.rechargekit;
 import androidx.annotation.NonNull;
 
 public class RechargeCodes {
+
+    // airtime recharge codes
     private static  final String MTN_RECHARGE_CODE = "*555*" ;
     private  static  final  String AIRTEL_RECHARGE_CODE = "*126*" ;
     private  static  final  String GLO_RECHARGE_CODE = "*123*" +"#";
     private  static  final  String NINE_MOBILE_RECHARGE_CODE = "*222*";
     private static  final  String CODE_END = "#";
+
+    // Data recharge codes
+    private static  final String MTN_DATA_CODE = "*131*";
+    private static final int MTN_WEEKLY_CODE = 102;
+
+
+    //bank recharge codes
     private  static  final String GTB_CODE = "*737*";
     private  static  final String FB_CODE = "*894*";
     private  static  final String UBA_CODE = "*919*";

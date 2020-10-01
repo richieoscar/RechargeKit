@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    tools:context=".DetailsActivity">
+    tools:context=".AirtimeActivity">
 
     <EditText
         android:id="@+id/editText__recharge_pin"
@@ -17,7 +17,7 @@
         android:ems="10"
         android:hint="Enter Rechage Pin"
         android:inputType="number|textPersonName"
-        android:visibility="invisible"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         android:ems="10"
         android:hint="Enter Network"
         android:inputType="textPersonName"
-        android:visibility="invisible"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,6 @@
         android:layout_marginTop="56dp"
         android:background="@drawable/shape_button"
         android:text="Done"
-        android:visibility="invisible"
         android:textColor="@color/blue"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +72,7 @@
         android:layout_marginTop="52dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/edit_text_design"
+        android:backgroundTint="@color/orange"
         android:text="Bank Recharge"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/editText__recharge_pin"
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:text="Recharge Kit  2020"
+        android:text="Recharge Kit  "
         android:textColor="#3149D1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

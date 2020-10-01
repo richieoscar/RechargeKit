@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         nineMobile = findViewById(R.id.imageView_nine_mobile);
         footer = findViewById(R.id.textView_footer);
         network = findViewById(R.id.textView_choode_network);
+
+
         showMtnOptions();
         showAirtelOptions();
         showGloOption();
@@ -65,17 +66,24 @@ public class MainActivity extends AppCompatActivity {
        airtimeButton.setOnClickListener((v)->{goToDetailActivity(); finish();});
 
         dataButton =view.findViewById(R.id.button_data);
-        dataButton.setOnClickListener((v)->{goToDetailActivity(); finish();});
+        dataButton.setOnClickListener((v)->{goToDataActivity(); finish();});
 
         transferButton = view.findViewById(R.id.button_transfer);
-        transferButton.setOnClickListener((v)->{goToDetailActivity(); finish();});
+        transferButton.setOnClickListener((v)->{goToTransferActivity(); finish();});
 
             builder.show();
 
     }
 
+    private void goToTransferActivity(){
+        startActivity(new Intent(MainActivity.this, TransferActivity.class));
+    }
+
     private void goToDetailActivity(){
-        startActivity(new Intent(MainActivity.this, DetailsActivity.class));
+        startActivity(new Intent(MainActivity.this, AirtimeActivity.class));
+    }
+    private void goToDataActivity(){
+        startActivity(new Intent(MainActivity.this, DataActivity.class));
     }
 
     private void showGloOption(){
