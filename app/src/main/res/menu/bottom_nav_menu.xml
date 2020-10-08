@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/item_airtime"
+            android:icon="@drawable/ic_action_airtime"
+            android:title="Buy Airtime">
+
+        </item>
+
+    <item android:id="@+id/item_data"
+        android:icon="@drawable/ic_action_data"
+        android:title="Buy Data">
+
+    </item>
+
+    <item android:id="@+id/item_transfer"
+        android:icon="@drawable/ic_action_transfer"
+        android:title="Transfer">
+
+    </item>
+</menu>
