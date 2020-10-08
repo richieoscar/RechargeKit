@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showMtnOptions(){
-        mtn.setOnClickListener((v)->{showOptions();});
+        mtn.setOnClickListener((v)->{
+            goToMtnActivity();});
     }
 
     private void showAirtelOptions(){
@@ -63,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
            builder.setView(view);
 
        airtimeButton = view.findViewById(R.id.button_airtime);
-       airtimeButton.setOnClickListener((v)->{goToDetailActivity(); finish();});
+       airtimeButton.setOnClickListener((v)->{
+           goToAirtimeActivity(); finish();});
 
         dataButton =view.findViewById(R.id.button_data);
         dataButton.setOnClickListener((v)->{goToDataActivity(); finish();});
@@ -75,11 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void goToMtnActivity(){
+        startActivity(new Intent(MainActivity.this, MtnActivity.class));
+    }
+
     private void goToTransferActivity(){
         startActivity(new Intent(MainActivity.this, TransferActivity.class));
     }
 
-    private void goToDetailActivity(){
+    private void goToAirtimeActivity(){
         startActivity(new Intent(MainActivity.this, AirtimeActivity.class));
     }
     private void goToDataActivity(){

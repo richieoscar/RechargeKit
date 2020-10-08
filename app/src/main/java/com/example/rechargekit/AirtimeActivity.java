@@ -3,8 +3,11 @@ package com.example.rechargekit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.rechargekit.models.AirtimeRechargeCodes;
 
 public class AirtimeActivity extends AppCompatActivity {
 
@@ -41,12 +45,10 @@ public class AirtimeActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Airtime Recharge");
 
-//        MenuItem menuItem = findViewById(R.id.item_menu_airtime);
-//        menuItem.setVisible(false);
 
 
 
-
+        getData();
         rechargeCArd();
         bankRecharge();
     }
@@ -105,48 +107,46 @@ public class AirtimeActivity extends AppCompatActivity {
                network.setError("Field is Empty");
                return;
            }
+            // VALIDATE FIELDS
+            String checkNetwork = network.getText().toString().toLowerCase();
 
-           if(network.getText().toString().toLowerCase().equals(airtel_id)){
-               String code = String.format("%s %s %s",RechargeCodes.getAirtelRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-              // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-               Intent dialer = new Intent(Intent.ACTION_DIAL);
-              // Uri uri = Uri.parse("tel:" +code );
-               dialer.setData(Uri.parse("tel:" +code));
-               Log.d(TAG, "getData: is formatted");
-               startActivity(dialer);
-                return;
-           }  else Toast.makeText(this, "Network not Recognized",Toast.LENGTH_SHORT).show();
+           if(checkNetwork.equals(airtel_id)   && airtimeRechargePin.length()== AirtimeRechargeCodes.getAirtelDigitCodeLength() ){
+               String code = String.format("%s%s%s", AirtimeRechargeCodes.getAirtelRechargeCode(), airtimeRechargePin, AirtimeRechargeCodes.getEncodedHash());
+               actionCall(code);
 
-            if(network.getText().toString().toLowerCase().equals(mtn_id)){
-                String code = String.format("%s %s %s",RechargeCodes.getMtnRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-              //  String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-              //  Uri uri = Uri.parse("tel:" +code );
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-                return;
-            } else Toast.makeText(this, "Network not Recognized",Toast.LENGTH_SHORT).show();
+               return;
 
-            if(network.getText().toString().toLowerCase().equals(glo_id)){
-               String code = String.format("%s %s %s",RechargeCodes.getGloRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-                //String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-               // Uri uri = Uri.parse("tel:" +code );
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-                return;
-
-            } else Toast.makeText(this, "Network not Recognized",Toast.LENGTH_SHORT).show();
-
-            if(network.getText().toString().toLowerCase().equals(nine_mobile)){
-                String code = String.format("%s %s %s",RechargeCodes.getNineMobileRechargeCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-               // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-                //Uri uri = Uri.parse("tel:" +code );
-                dialer.setData(Uri.parse("tel:" +code));
+           }
+            else if(checkNetwork.equals(mtn_id)  && airtimeRechargePin.length() == AirtimeRechargeCodes.getMtnDigitCodeLength()){
+               String code = String.format("%s%s%s", AirtimeRechargeCodes.getMtnRechargeCode(), airtimeRechargePin, AirtimeRechargeCodes.getEncodedHash());
+               actionCall(code);
                 return;
             }
-            else Toast.makeText(this, "Network name not recognized", Toast.LENGTH_SHORT).show();
+           else if(checkNetwork.equals(mtn_id)  && airtimeRechargePin.length() == AirtimeRechargeCodes.getMtnDigitCodeSecondLength()){
+               String code = String.format("%s%s%s", AirtimeRechargeCodes.getMtnRechargeCode(), airtimeRechargePin, AirtimeRechargeCodes.getEncodedHash());
+             // dialCode(code);
+               actionCall(code);
+               return;
+           }
+
+           else if(checkNetwork.equals(glo_id) && airtimeRechargePin.length()==AirtimeRechargeCodes.getGloDigitCodeLength()) {
+               String code = String.format("%s%s%s", AirtimeRechargeCodes.getGloRechargeCode(), airtimeRechargePin, AirtimeRechargeCodes.getEncodedHash());
+               actionCall(code);
+               return;
+
+           }
+
+           else if(checkNetwork.equals(nine_mobile) && airtimeRechargePin.length()==AirtimeRechargeCodes.getNineMobileDigitCodeLength()){
+               String code = String.format("%s%s%s", AirtimeRechargeCodes.getNineMobileRechargeCode(), airtimeRechargePin, AirtimeRechargeCodes.getEncodedHash());
+               actionCall(code);
+
+                return;
+
+            }
+            else {
+               rechargePin.setError("Invalid network or Invalid pin code");
+
+            }
 
         });
 
@@ -185,17 +185,20 @@ public class AirtimeActivity extends AppCompatActivity {
        });
         bankRecharge.setClickable(true);
     }
+
+
     private void getDataForBankRecharge(){
         done.setOnClickListener((view)->{
             Log.d(TAG, "getDataForBankRecharge: check");
-            String airtimeRechargePin = rechargePin.getText().toString(); //this editText serves for both airtime recharge pin and amount for bank recharge
+            String amount = rechargePin.getText().toString(); //this editText serves for both airtime recharge pin and amount for bank recharge
             final String GTBANK_ID ="gtbank";
             final  String FB_ID = "firstbank";
             final String ZENITH_ID = "zenith";
             final String UBA_ID  = "uba";
 
+            String checkNetwork = network.getText().toString().toLowerCase();
 
-
+            //Check if fields are empty
             if(TextUtils.isEmpty(rechargePin.getText())){
                 rechargePin.setError("Field is Empty");
                 return;
@@ -205,55 +208,56 @@ public class AirtimeActivity extends AppCompatActivity {
                 return;
             }
 
-            if(network.getText().toString().toLowerCase().equals(GTBANK_ID)){
-                String code = String.format("%s %s %s",RechargeCodes.getGtbCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-               // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-                dialer.setData(Uri.parse("tel:"+code));
-                startActivity(dialer);
-                return;
-            }  else Toast.makeText(this, "Bank name not Recognized",Toast.LENGTH_SHORT).show();
-
-            if(network.getText().toString().toLowerCase().equals(FB_ID)){
-               String code = String.format("%s %s %s",RechargeCodes.getFbCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-                //String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-               dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-                return;
-            } else Toast.makeText(this, "Bank name not Recognized",Toast.LENGTH_SHORT).show();
-
-            if(network.getText().toString().toLowerCase().equals(ZENITH_ID)){
-               String code = String.format("%s %s %s",RechargeCodes.getZenithCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-               // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-                return;
-
-            } else Toast.makeText(this, "Bank name not Recognized",Toast.LENGTH_SHORT).show();
-
-            if(network.getText().toString().toLowerCase().equals(UBA_ID)){
-               String code = String.format("%s %s %s",RechargeCodes.getUbaCode(), airtimeRechargePin, RechargeCodes.getCodeEnd());
-               // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-               // Uri uri = Uri.parse("tel:" +code );
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
+            if(checkNetwork.equals(GTBANK_ID)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getGtbCode(), amount, AirtimeRechargeCodes.getEncodedHash());
+                actionCall(code);
                 return;
             }
-            else Toast.makeText(this, "Bank name not recognized", Toast.LENGTH_SHORT).show();
 
+            else if(checkNetwork.equals(FB_ID)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getFbCode(), amount, AirtimeRechargeCodes.getEncodedHash());
+                actionCall(code);
+                return;
 
+            }
 
+            else if(checkNetwork.equals(ZENITH_ID)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getZenithCode(), amount, AirtimeRechargeCodes.getEncodedHash());
+                actionCall(code);
+                return;
+            }
 
-
-
-
-
-
+            else if(checkNetwork.equals(UBA_ID)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getUbaCode(), amount, AirtimeRechargeCodes.getEncodedHash());
+                actionCall(code);
+                return;
+            }
+            else {
+               network.setError("Invalid Bank name");
+            }
 
         });
+
+    }
+        // Not used yet
+    private void dialCode(String code) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + code));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
+    private void actionCall(String code) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + code));
+     if (ActivityCompat.checkSelfPermission(AirtimeActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        return;
+        }
+        Log.d(TAG, "actionCall: check");
+        startActivity(intent);
 
     }
 }

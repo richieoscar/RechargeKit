@@ -3,8 +3,11 @@ package com.example.rechargekit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.rechargekit.models.AirtimeRechargeCodes;
 
 public class DataActivity extends AppCompatActivity {
 
@@ -98,79 +102,49 @@ public class DataActivity extends AppCompatActivity {
                 return;
             }
 
-                if (TextUtils.isEmpty(dataNetwork.getText())) {
+            if (TextUtils.isEmpty(dataNetwork.getText())) {
                     dataNetwork.setError("Field is Empty");
                     return;
                 }
 
-                    if(TextUtils.isEmpty(dataPlan.getText())) {
-                        if((!dataPlan.getText().equals(plan) || !dataPlan.getText().equals(plan2))){
-                            dataPlan.setError("Enter: weekly/monthly");
-                            return;
-                        }
-                        dataPlan.setError("Field is Empty");
-
-                        return;
+            if(TextUtils.isEmpty(dataPlan.getText())) {
+                dataPlan.setError("Field is Empty");
+                return;
                     }
+            if((!dataPlan.getText().equals(plan) || !dataPlan.getText().equals(plan2))){
+                dataPlan.setError("Enter: weekly/monthly");
+                return;
+            }
 
                     //validate the Network
 
-                    if(!dataNetwork.getText().toString().toLowerCase().equals(airtel_id)) {
-                        Toast.makeText(this, "Network name not Recognized", Toast.LENGTH_SHORT).show();
-                    }
-              else {
-                        String code = String.format("%s %s %s",RechargeCodes.getAirtelRechargeCode(), dataPrice, RechargeCodes.getCodeEnd());
-                        // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                        Intent dialer = new Intent(Intent.ACTION_DIAL);
-                        dialer.setData(Uri.parse("tel:"+code));
-                        startActivity(dialer);
+            if(dataNetwork.getText().toString().toLowerCase().equals(airtel_id)) {
+                        String code = String.format("%s %s %s", AirtimeRechargeCodes.getAirtelRechargeCode(), dataPrice, AirtimeRechargeCodes.getEncodedHash());
+                        dialCode(code);
+                        return;
                     }
 
-            if(!dataNetwork.getText().toString().toLowerCase().equals(mtn_id)){
-                Toast.makeText(this, "Network name not Recognized", Toast.LENGTH_SHORT).show();
-            } else {
-                String code = String.format("%s %s %s",RechargeCodes.getMtnRechargeCode(), dataPrice, RechargeCodes.getCodeEnd());
-                //String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-
+            else if(dataNetwork.getText().toString().toLowerCase().equals(mtn_id)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getMtnRechargeCode(), dataPrice, AirtimeRechargeCodes.getEncodedHash());
+                dialCode(code);
+                return;
             }
 
-            if(!dataNetwork.getText().toString().toLowerCase().equals(glo_id)){
-                Toast.makeText(this, "Network name not Recognized", Toast.LENGTH_SHORT).show();
-
-            } else {
-                String code = String.format("%s %s %s",RechargeCodes.getGloRechargeCode(), dataPrice, RechargeCodes.getCodeEnd());
-                // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-
+            else  if(dataNetwork.getText().toString().toLowerCase().equals(glo_id)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getGloRechargeCode(), dataPrice, AirtimeRechargeCodes.getEncodedHash());
+                dialCode(code);
+                return;
             }
 
-            if(!dataNetwork.getText().toString().toLowerCase().equals(nine_mobile)){
-                Toast.makeText(this, "Network name not Recognized", Toast.LENGTH_SHORT).show();
+           else if(dataNetwork.getText().toString().toLowerCase().equals(nine_mobile)){
+                String code = String.format("%s %s %s", AirtimeRechargeCodes.getUbaCode(), dataPrice, AirtimeRechargeCodes.getEncodedHash());
+                dialCode(code);
+                return;
             }
             else{
-                String code = String.format("%s %s %s",RechargeCodes.getUbaCode(), dataPrice, RechargeCodes.getCodeEnd());
-                // String code = String.format("%s %s %d",RechargeCodes.getGtbCode(), airtimeRechargePin,code_end);
-                Intent dialer = new Intent(Intent.ACTION_DIAL);
-                // Uri uri = Uri.parse("tel:" +code );
-                dialer.setData(Uri.parse("tel:" +code));
-                startActivity(dialer);
-
+               dataNetwork.setError("Invalid network name ");
+               dataPlan.setError("Enter: weekly or monthly");
             }
-
-
-
-
-
-
-
-
-
-
         });
 
     }
@@ -191,6 +165,25 @@ public class DataActivity extends AppCompatActivity {
 
         });
         dataWithAirtime.setClickable(true);
+
+    }
+    private void dialCode(String code) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + code));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private void actionCall(String code) {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" + code));
+        if (ActivityCompat.checkSelfPermission(DataActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Log.d(TAG, "actionCall: check");
+        startActivity(intent);
 
     }
 }

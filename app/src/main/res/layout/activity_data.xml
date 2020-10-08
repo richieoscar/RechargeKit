@@ -73,7 +73,7 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/edit_text_design"
         android:backgroundTint="#FF5722"
-        android:text="Buy with Bank"
+        android:text="Buy from Bank"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/editText__recharge_pin"
         app:layout_constraintEnd_toEndOf="parent"

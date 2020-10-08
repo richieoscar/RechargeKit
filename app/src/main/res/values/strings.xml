@@ -5,4 +5,12 @@
     <string name="glo">GLO</string>
     <string name="airtel">AIRTEL</string>
     <string name="mtn">MTN</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- FRAGMENT TAGS -->
+    <string name="tag_fragment_airtime">Airtime</string>
+    <string name="tag_fragment_data">Data</string>
+    <string name="tag_fragment_transfer">Transfer</string>
 </resources>
